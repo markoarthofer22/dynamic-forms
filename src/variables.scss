@@ -1,0 +1,81 @@
+// All variables for project (colors, fonts, font-sizes ect.)
+//mixins vars
+$break-small: 768px;
+$break-medium: 996px;
+$break-large: 1200px;
+$break-max: 1560px;
+
+// mixins for media-screen
+@mixin respond-to($media) {
+	@if $media == sm {
+		@media only screen and (min-width: $break-small) {
+			@content;
+		}
+	}
+	@if $media == md {
+		@media only screen and (min-width: $break-medium) {
+			@content;
+		}
+	} @else if $media == lg {
+		@media only screen and (min-width: $break-large) {
+			@content;
+		}
+	} @else if $media == xlg {
+		@media only screen and (min-width: $break-max) {
+			@content;
+		}
+	}
+}
+
+:root {
+	//font setup
+	--font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+	--paragraph: #555;
+	--link: #034ea2;
+	--background: #fff;
+	--main-size: 10px;
+	//Colors
+	--primary-color: #000;
+	--secondary-color: #8bd53f;
+	--verified-color: #22d698;
+	--confirm-color: #6bbe47;
+	--primary-border-color: #1264e6;
+	--background-grey: #f4f4f4;
+	--grey-border: #dedede;
+	--textarea-border: #c7c7c7;
+	--grey: #585858;
+	--black: #000;
+	--white: #fff;
+	--read: #888;
+	--red: #d71920;
+	--light-grey: #ccc;
+	--green: #cc000d;
+	--warning-red: #cc000d;
+	--yellow: #000000;
+	--input-hover: #888;
+	--blue: #005bf4;
+	--title-color: #0a295b;
+
+	//Gap
+	--gap: 30px;
+
+	@include respond-to(md) {
+		--gap: 40px;
+	}
+	@include respond-to(lg) {
+		--gap: 50px;
+	}
+
+	//Sizes
+	--main-title: 2.5rem;
+	--pre-title: 2rem;
+	--heading: 1.8rem;
+	--offsetTop: 30px;
+
+	@include respond-to(md) {
+		--main-title: 3.5rem;
+		--pre-title: 2rem;
+		--heading: 1.8rem;
+		--offsetTop: 110px;
+	}
+}

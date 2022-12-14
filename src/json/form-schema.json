@@ -1,0 +1,53 @@
+{
+	"account_id": {
+		"type": "integer",
+		"required": true,
+		"label": "The ID of your account",
+		"help_text": "Extra guidance here",
+		"placeholder": ""
+	},
+	"name": {
+		"type": "string",
+		"required": true,
+		"label": "First name",
+		"help_text": "Text",
+		"placeholder": "Enter your name",
+		"regex": ""
+	},
+	"password": {
+		"type": "password",
+		"required": "This field is required",
+		"label": "Password",
+		"placeholder": "",
+		"regex": ""
+	},
+	"email": {
+		"type": "string",
+		"required": true,
+		"label": "Email",
+		"help_text": "Enter your email",
+		"placeholder": "",
+		"regex": ""
+	},
+	"radio_button_example": {
+		"type": "boolean",
+		"label": "Yes, do whatever",
+		"acceptLabel": "Do it",
+		"declineLabel": "Dont do it"
+	},
+
+	"textarea_example": {
+		"type": "textarea",
+		"label": "Textarea",
+		"required": true
+	},
+	"dropdown_example": {
+		"type": "dropdown",
+		"label": "Action on call",
+		"placeholder": "Some placeholder",
+		"choices": {
+			"OPEN_CUSTOMER": "Open customer dashboard",
+			"OPEN_TICKETS": "Open overview of tickets"
+		}
+	}
+}
