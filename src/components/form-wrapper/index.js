@@ -6,11 +6,30 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 	const renderFormFromJSON = (jsonItem, key, name) => {
 		let C;
 
-		const { help_text, label, placeholder, regex, required, type } = jsonItem;
+		const { help_text, label, placeholder, options, regex, required, type } = jsonItem;
 		switch (type) {
 			case 'string':
 				// type = 'text', name, value = '', className, onChange, iconClick, delay, allowClear, defaultValue, errors
-				C = <FormItems.SimpleInput type="text" placeholder={placeholder} label={label} name={name} />;
+				C = <FormItems.SimpleInput type="text" placeholder={placeholder} helpText={help_text} label={label} name={name} />;
+				break;
+
+			case 'textarea':
+				C = <FormItems.TextArea placeholder={placeholder} helpText={help_text} label={label} name={name} />;
+				break;
+
+			case 'password':
+				C = <FormItems.SimpleInput type="password" placeholder={placeholder} helpText={help_text} label={label} name={name} />;
+				break;
+
+			case 'boolean':
+				C = (
+					<FormItems.RadioButton
+						label={label}
+						name={name}
+						options={options}
+						// onChange={handleChange}
+					/>
+				);
 				break;
 
 			default:

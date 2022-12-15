@@ -32,13 +32,30 @@
 	"radio_button_example": {
 		"type": "boolean",
 		"label": "Yes, do whatever",
-		"acceptLabel": "Do it",
-		"declineLabel": "Dont do it"
+		"options": [
+			{
+				"label": "Coffee",
+				"name": "button-types"
+			},
+			{
+				"label": "Tea",
+				"name": "button-types",
+				"selected": true
+			},
+			{
+				"label": "Disabled",
+				"disabled": true,
+				"name": "button-types"
+			}
+		]
 	},
 
 	"textarea_example": {
 		"type": "textarea",
 		"label": "Textarea",
+		"placeholder": "Some placeholder",
+		"help_text": "Enter text",
+		"regex": "",
 		"required": true
 	},
 	"dropdown_example": {

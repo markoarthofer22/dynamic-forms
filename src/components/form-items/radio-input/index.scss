@@ -1,0 +1,104 @@
+@import '../../../variables.scss';
+.customToggle {
+	.legend {
+		font-weight: 600;
+		font-size: 1.4rem;
+		color: var(--primary-color);
+	}
+
+	fieldset {
+		border: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.wrapper {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.radioWrapper {
+		margin-top: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+
+		label {
+			padding: 0;
+			margin: 0;
+			margin-left: 6px;
+
+			&.disabled {
+				cursor: not-allowed;
+				opacity: 0.5;
+			}
+		}
+
+		& > input {
+			-webkit-appearance: none;
+			cursor: pointer;
+			appearance: none;
+			margin: 0;
+			width: 1.5em;
+			height: 1.5em;
+			border: 2px solid var(--primary-color);
+			border-radius: 50%;
+			transition: all 0.1s ease-in-out;
+
+			&::after {
+				content: '';
+				display: block;
+				border-radius: 50%;
+				width: 0.75em;
+				height: 0.75em;
+				margin: 3px;
+				transition: all 0.1s ease-in-out;
+			}
+
+			&:checked {
+				&::after {
+					background-color: var(--primary-color);
+				}
+				&:hover {
+					background-color: var(--white);
+					border: 2px solid var(--primary-color);
+					&::after {
+						background-color: var(--primary-color);
+					}
+				}
+			}
+
+			&:focus {
+				outline: 2px solid var(--secondary-color);
+			}
+
+			&:hover {
+				&::after {
+					background-color: var(--secondary-color);
+				}
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				border: 2px solid var(--paragraph);
+				background-color: var(--paragraph);
+				&:hover {
+					&::after {
+						background-color: var(--paragraph);
+					}
+				}
+				&:checked {
+					&::after {
+						background-color: var(--white);
+					}
+					&:hover {
+						background-color: var(--paragraph);
+						&::after {
+							background-color: var(--white);
+						}
+					}
+				}
+			}
+		}
+	}
+}

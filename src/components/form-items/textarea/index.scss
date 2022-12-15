@@ -1,0 +1,46 @@
+@import '../../../variables.scss';
+
+.formText {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+
+	textarea {
+		// flex: 1;
+		width: auto;
+	}
+
+	.help-text {
+		position: absolute;
+		right: 5px;
+		bottom: -20px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 1.2rem;
+
+		svg {
+			fill: #0a295b;
+			width: 15px;
+			height: 15px;
+			margin-right: 4px;
+		}
+	}
+
+	.clearButton {
+		position: absolute;
+		right: 60px;
+		top: calc(50% - 10px);
+		width: 20px;
+		height: 20px;
+		background-color: #0a295b;
+		border-radius: 10px;
+
+		.icon {
+			width: 20px;
+			height: 20px;
+			stroke: #fff;
+			fill: #fff;
+		}
+	}
+}

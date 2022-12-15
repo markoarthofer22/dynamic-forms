@@ -1,12 +1,36 @@
 @import './variables.scss';
+
+html {
+	font-size: 62.5%;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	-ms-overflow-style: scrollbar;
+}
+
+html[data-font='medium'] {
+	font-size: 67.5%;
+}
+
+html[data-font='large'] {
+	font-size: 73.5%;
+}
+
+html[data-color='no-color'] {
+	filter: saturate(0) contrast(1.5);
+}
+
 body {
-	margin: 0;
-	font-family: var(--font), sans-serif;
-	color: var(--paragraph);
-	font-size: var(--main-size);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	padding: 20px 10px;
+	font-family: var(--font), sans-serif;
+	line-height: 1.231;
+	height: 100%;
+	color: var(--black);
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+	font-size: 1.6rem;
 }
 
 code {

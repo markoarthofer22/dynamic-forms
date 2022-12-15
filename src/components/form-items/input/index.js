@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
-import { BsFillBackspaceFill } from 'react-icons/bs';
+import { BsFillBackspaceFill, BsInfoCircle } from 'react-icons/bs';
 import './index.scss';
 
 const Input = forwardRef((props, ref) => {
-	const { type = 'text', name, value = '', label, className, placeholder, onChange, iconClick, delay, allowClear, defaultValue, errors, ...other } = props;
+	const { type = 'text', name, helpText, value = '', label, className, placeholder, onChange, iconClick, delay, allowClear, defaultValue, errors, ...other } = props;
 	const [length, setLength] = useState(value?.length ? value?.length : defaultValue ? defaultValue.length : 0);
 
 	const [stateValue, setStateValue] = useState(value);
@@ -62,6 +62,13 @@ const Input = forwardRef((props, ref) => {
 			{allowClear && length > 0 && (
 				<div className="clearButton" onClick={() => clearInput()}>
 					<BsFillBackspaceFill />
+				</div>
+			)}
+
+			{helpText && (
+				<div className="help-text">
+					<BsInfoCircle />
+					{helpText}
 				</div>
 			)}
 
