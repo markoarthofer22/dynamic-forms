@@ -1,11 +1,27 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
-import { BsFillBackspaceFill, BsInfoCircle } from 'react-icons/bs';
+import { BsFillBackspaceFill, BsFillEyeFill, BsFillEyeSlashFill, BsInfoCircle } from 'react-icons/bs';
 import './index.scss';
 
 const Input = forwardRef((props, ref) => {
-	const { type = 'text', name, helpText, value = '', label, className, placeholder, onChange, iconClick, delay, allowClear, defaultValue, errors, ...other } = props;
+	const {
+		type = 'text',
+		togglePassword,
+		name,
+		helpText,
+		value = '',
+		label,
+		className,
+		placeholder,
+		onChange,
+		iconClick,
+		delay,
+		allowClear,
+		defaultValue,
+		errors,
+		...other
+	} = props;
 	const [length, setLength] = useState(value?.length ? value?.length : defaultValue ? defaultValue.length : 0);
-
+	const [enablePassword, setEnablePassword] = useState(false);
 	const [stateValue, setStateValue] = useState(value);
 	const timeout = useRef();
 
@@ -52,12 +68,23 @@ const Input = forwardRef((props, ref) => {
 	return (
 		<div className={`formInput ${className || ''}`}>
 			{label && <label name={name}>{label}</label>}
-			<input ref={ref} type={type} name={name} value={stateValue} placeholder={placeholder} onChange={handleChange} autoComplete="off" {...other} />
-			{/* {iconValue && (
-				<div onClick={() => (iconClick ? iconClick(value) : null)} className={`rightIcon ${iconClick ? 'clickable' : ''}`}>
-					{iconValue}
-				</div>
-			)} */}
+			<div className="input-wrapper">
+				<input
+					ref={ref}
+					type={enablePassword ? 'text' : type}
+					name={name}
+					value={stateValue}
+					placeholder={placeholder}
+					onChange={handleChange}
+					autoComplete="off"
+					{...other}
+				/>
+				{togglePassword && (
+					<div onClick={() => setEnablePassword(!enablePassword)} className="password-icon">
+						{enablePassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill />}
+					</div>
+				)}
+			</div>
 
 			{allowClear && length > 0 && (
 				<div className="clearButton" onClick={() => clearInput()}>

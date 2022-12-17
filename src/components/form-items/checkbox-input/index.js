@@ -2,11 +2,19 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-function RadioButton({ name, label, required, options, defaultValue, onChange }) {
-	const [, setSelectedValue] = useState(null);
+function Checkbox({ name, label, required, options, defaultValue, onChange }) {
+	const [selectedVal, setSelectedValue] = useState([]);
 
 	function handleChange(e) {
-		setSelectedValue(options.find((option) => (option.label = e.target.value)));
+		if (selectedVal.find((item) => item.label === e.target.value)) {
+			setSelectedValue(selectedVal.filter((item) => item.label !== e.target.value));
+			if (onChange) onChange(e);
+			return;
+		}
+
+		const newValue = options.find((option) => (option.label = e.target.value));
+
+		setSelectedValue([...selectedVal, newValue]);
 
 		if (onChange) onChange(e);
 	}
@@ -14,13 +22,13 @@ function RadioButton({ name, label, required, options, defaultValue, onChange })
 	function renderOptions(groupName) {
 		return options?.map((item, index) => {
 			return (
-				<div key={index} className="radioWrapper">
+				<div key={index} className="checkboxWrapper">
 					<input
-						defaultChecked={item.selected || index === 0}
+						defaultChecked={item.selected}
 						value={item.label}
 						name={groupName || item.name}
-						type="radio"
-						onClick={handleChange}
+						type="checkbox"
+						onChange={handleChange}
 						id={item.label}
 						disabled={item.disabled}
 					/>
@@ -35,13 +43,13 @@ function RadioButton({ name, label, required, options, defaultValue, onChange })
 	useEffect(() => {
 		options.forEach((option) => {
 			if (option?.selected) {
-				setSelectedValue(option);
+				setSelectedValue([...selectedVal, option]);
 
 				if (onChange)
 					onChange({
 						target: {
-							type: 'radio',
-							name: name,
+							type: 'checkbox',
+							name,
 							value: option.label,
 						},
 					});
@@ -50,7 +58,7 @@ function RadioButton({ name, label, required, options, defaultValue, onChange })
 	}, []);
 
 	return (
-		<div className="customToggle">
+		<div className="customCheckbox">
 			<fieldset>
 				{label && <legend className="legend">{label}</legend>}
 				{options ? <div className="wrapper">{renderOptions(name)}</div> : <div className="wrapper">No values</div>}
@@ -59,4 +67,4 @@ function RadioButton({ name, label, required, options, defaultValue, onChange })
 	);
 }
 
-export default RadioButton;
+export default Checkbox;

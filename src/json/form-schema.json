@@ -17,12 +17,13 @@
 	"password": {
 		"type": "password",
 		"required": "This field is required",
+		"showPassword": true,
 		"label": "Password",
 		"placeholder": "",
 		"regex": ""
 	},
 	"email": {
-		"type": "string",
+		"type": "email",
 		"required": true,
 		"label": "Email",
 		"help_text": "Enter your email",
@@ -34,18 +35,43 @@
 		"label": "Yes, do whatever",
 		"options": [
 			{
-				"label": "Coffee",
+				"label": "Coffee Radio",
 				"name": "button-types"
 			},
 			{
-				"label": "Tea",
+				"label": "Tea Radio",
 				"name": "button-types",
 				"selected": true
 			},
 			{
-				"label": "Disabled",
+				"label": "Disabled Radio",
 				"disabled": true,
 				"name": "button-types"
+			}
+		]
+	},
+
+	"checbox_example": {
+		"type": "checkbox",
+		"label": "Yes, do whatever",
+		"options": [
+			{
+				"label": "Espresso Checkbox",
+				"name": "checkbox-types"
+			},
+			{
+				"label": "Coffee Checkbox",
+				"name": "checkbox-types"
+			},
+			{
+				"label": "Tea Checkbox",
+				"name": "checkbox-types",
+				"selected": true
+			},
+			{
+				"label": "Disabled Checkbox",
+				"disabled": true,
+				"name": "checkbox-types"
 			}
 		]
 	},
@@ -62,6 +88,8 @@
 		"type": "dropdown",
 		"label": "Action on call",
 		"placeholder": "Some placeholder",
+		"help_text": "Choose one",
+		"defaultValue": "OPEN_CUSTOMER",
 		"choices": {
 			"OPEN_CUSTOMER": "Open customer dashboard",
 			"OPEN_TICKETS": "Open overview of tickets"

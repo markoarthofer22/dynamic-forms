@@ -9,29 +9,29 @@
 		flex: 1;
 	}
 
-	.rightIcon {
+	.input-wrapper {
+		display: flex;
+
+		flex: 1;
+		position: relative;
+	}
+
+	.password-icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--primary-color);
-		min-width: 50px;
-		border-radius: 0px 6px 6px 0px;
-		color: var(--white);
+		position: absolute;
+		right: 10px;
+		top: 50%;
+		height: 100%;
+		transform: translateY(-50%);
 		font-size: 1.2rem;
 		transition: all 0.44s;
-
-		&.clickable {
-			cursor: pointer;
-
-			&:hover {
-				opacity: 0.9;
-			}
-		}
-
-		svg.icon {
-			width: 18px;
-			height: 18px;
-			fill: var(--white);
+		cursor: pointer;
+		svg {
+			width: 16px;
+			height: 16px;
+			fill: var(--primary-color);
 		}
 	}
 
