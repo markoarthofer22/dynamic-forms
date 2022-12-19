@@ -4,8 +4,9 @@ import FormItems from '../index';
 
 function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 	const [formData, setFormData] = useState({});
+	const [badState, setBadState] = useState(null);
 
-	const handleChange = (e) => {
+	const handleChange = (e, hasError = false) => {
 		let v, t;
 		const {
 			target: { type, name, value },
@@ -13,6 +14,9 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 
 		if (type === 'checkbox') {
 			t = formData?.[name] || '';
+
+			if (t.error) t = [...t.v];
+
 			if (t !== '' && t?.find((i) => i === value)) {
 				v = t?.filter((i) => i !== value);
 			} else {
@@ -25,35 +29,111 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 		setFormData((prevState) => {
 			return {
 				...prevState,
-				[e.target.name]: v,
+				[e.target.name]: hasError ? { error: true, v } : v,
 			};
 		});
 	};
 
-	useEffect(() => {
-		console.log('formData, ', formData);
-	}, [formData]);
+	function submitForm() {
+		let counter = 0;
+		let unvalidated = [];
+		Object.keys(data).forEach((key) => {
+			if (data[key]?.required && !formData[key]) {
+				console.log(`${key} - ERROR REQUIRED`);
+				counter++;
+				unvalidated.push(key);
+			}
 
-	const renderFormFromJSON = (jsonItem, key, name) => {
+			if (formData[key]?.error) {
+				console.log(`${key} - ERROR`);
+				unvalidated.push(key);
+				counter++;
+			}
+		});
+
+		setBadState(unvalidated);
+
+		// ! possible data as param to the callback
+		if (counter === 0) onSubmit(formData);
+		else alert('Error Occured');
+	}
+
+	const renderFormFromJSON = (jsonItem, key, name, triggerValidation) => {
 		let C;
 
 		const { help_text, label, placeholder, options, defaultValue, regex, required, choices, type, showPassword } = jsonItem;
 		switch (type) {
 			case 'string':
-				// type = 'text', name, value = '', className, onChange, iconClick, delay, allowClear, defaultValue, errors
-				C = <FormItems.SimpleInput onChange={handleChange} type="text" placeholder={placeholder} helpText={help_text} label={label} name={name} />;
+				C = (
+					<FormItems.Input
+						regex={regex}
+						required={required}
+						onChange={handleChange}
+						type="text"
+						placeholder={placeholder}
+						helpText={help_text}
+						label={label}
+						name={name}
+						triggerValidation={triggerValidation}
+					/>
+				);
 				break;
 
-			case 'textarea':
-				C = <FormItems.TextArea onChange={handleChange} placeholder={placeholder} helpText={help_text} label={label} name={name} />;
+			case 'integer':
+				C = (
+					<FormItems.Input
+						regex={regex}
+						required={required}
+						onChange={handleChange}
+						type="number"
+						placeholder={placeholder}
+						helpText={help_text}
+						label={label}
+						name={name}
+						triggerValidation={triggerValidation}
+					/>
+				);
 				break;
 
 			case 'password':
 				C = (
-					<FormItems.SimpleInput
+					<FormItems.Input
+						regex={regex}
+						required={required}
 						togglePassword={showPassword}
 						onChange={handleChange}
 						type="password"
+						placeholder={placeholder}
+						helpText={help_text}
+						label={label}
+						name={name}
+						triggerValidation={triggerValidation}
+					/>
+				);
+				break;
+
+			case 'email':
+				C = (
+					<FormItems.Input
+						regex={regex}
+						required={required}
+						onChange={handleChange}
+						type="email"
+						placeholder={placeholder}
+						helpText={help_text}
+						label={label}
+						name={name}
+						triggerValidation={triggerValidation}
+					/>
+				);
+				break;
+
+			case 'textarea':
+				C = (
+					<FormItems.TextArea
+						triggerValidation={triggerValidation}
+						required={required}
+						onChange={handleChange}
 						placeholder={placeholder}
 						helpText={help_text}
 						label={label}
@@ -62,15 +142,11 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 				);
 				break;
 
-			case 'email':
-				C = <FormItems.SimpleInput onChange={handleChange} type="email" placeholder={placeholder} helpText={help_text} label={label} name={name} />;
-				break;
-
 			case 'boolean':
-				C = <FormItems.RadioButton label={label} name={name} options={options} onChange={handleChange} />;
+				C = <FormItems.RadioButton required={required} label={label} name={name} options={options} onChange={handleChange} />;
 				break;
 			case 'checkbox':
-				C = <FormItems.Checkbox label={label} name={name} options={options} onChange={handleChange} />;
+				C = <FormItems.Checkbox triggerValidation={triggerValidation} required={required} label={label} name={name} options={options} onChange={handleChange} />;
 				break;
 
 			case 'dropdown':
@@ -101,9 +177,11 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 	return (
 		<div>
 			{title && <h2>{title}</h2>}
-			<form>{Object.keys(data).map((key, index) => renderFormFromJSON(data[key], index, key))}</form>
+			<form>
+				{Object.keys(data).map((key, index) => key !== 'params' && renderFormFromJSON(data[key], index, key, Boolean(badState?.find((item) => item === key))))}
+			</form>
 
-			{onSubmit && <Button title={submitTitle} className="submit" type="submit" onClick={() => console.log('submitted')} />}
+			{onSubmit && <Button title={submitTitle} className="submit" type="submit" onClick={() => submitForm()} />}
 		</div>
 	);
 }

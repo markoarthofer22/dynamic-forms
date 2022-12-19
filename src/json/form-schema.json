@@ -1,10 +1,18 @@
 {
+	"params": {
+		"api": "",
+		"validationType": "onBlur",
+		"type": "POST"
+	},
 	"account_id": {
 		"type": "integer",
-		"required": true,
+		"required": {
+			"isRequired": true,
+			"message": "Example of error message from JSON"
+		},
 		"label": "The ID of your account",
 		"help_text": "Extra guidance here",
-		"placeholder": ""
+		"placeholder": "Enter you acc number"
 	},
 	"name": {
 		"type": "string",
@@ -12,7 +20,10 @@
 		"label": "First name",
 		"help_text": "Text",
 		"placeholder": "Enter your name",
-		"regex": ""
+		"regex": {
+			"isRequired": "[0-9a-zA-Z]{6,}",
+			"message": "Must be more than alphaNumeric Char"
+		}
 	},
 	"password": {
 		"type": "password",
@@ -28,10 +39,17 @@
 		"label": "Email",
 		"help_text": "Enter your email",
 		"placeholder": "",
-		"regex": ""
+		"regex": {
+			"isRequired": "^([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)$",
+			"message": "Please enter valid email"
+		}
 	},
 	"radio_button_example": {
 		"type": "boolean",
+		"required": {
+			"isRequired": true,
+			"message": "Example of error message from JSON"
+		},
 		"label": "Yes, do whatever",
 		"options": [
 			{
@@ -40,8 +58,7 @@
 			},
 			{
 				"label": "Tea Radio",
-				"name": "button-types",
-				"selected": true
+				"name": "button-types"
 			},
 			{
 				"label": "Disabled Radio",
@@ -51,9 +68,25 @@
 		]
 	},
 
-	"checbox_example": {
+	"checkbox_example_not_required": {
+		"type": "checkbox",
+		"label": "Yes, do whatever but not required",
+		"required": false,
+		"options": [
+			{
+				"label": "Espresso Checkbox",
+				"name": "checkbox-types-1"
+			}
+		]
+	},
+
+	"checkbox_example": {
 		"type": "checkbox",
 		"label": "Yes, do whatever",
+		"required": {
+			"isRequired": true,
+			"message": "Example of error message from JSON"
+		},
 		"options": [
 			{
 				"label": "Espresso Checkbox",
@@ -81,7 +114,6 @@
 		"label": "Textarea",
 		"placeholder": "Some placeholder",
 		"help_text": "Enter text",
-		"regex": "",
 		"required": true
 	},
 	"dropdown_example": {

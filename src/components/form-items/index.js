@@ -6,7 +6,7 @@ import Checkbox from './checkbox-input/index';
 import FormWrapper from './form-wrapper/index';
 
 const formItems = {
-	SimpleInput: Input,
+	Input,
 	TextArea,
 	RadioButton,
 	Dropdown,

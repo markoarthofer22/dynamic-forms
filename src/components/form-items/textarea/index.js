@@ -1,23 +1,60 @@
-import React, { useState, useRef, forwardRef } from 'react';
+import React, { useState, useRef, forwardRef, useEffect } from 'react';
 import { BsFillBackspaceFill, BsInfoCircle } from 'react-icons/bs';
 import './index.scss';
 
 const TextArea = forwardRef((props, ref) => {
-	const { value, onChange, delay, helpText, label, placeholder, allowClear, errors, name, ...other } = props;
+	const { value, triggerValidation, onChange, required, regex, delay, helpText, label, placeholder, allowClear, errors, name, ...other } = props;
 	const [length, setLength] = useState(value?.length ? value?.length : 0);
 	const timeout = useRef();
 	const inputRef = useRef();
+	const [inputError, setInputError] = useState(errors);
+	const internalRef = useRef();
+
+	function validator(value) {
+		const requiredType = typeof required === 'boolean' ? 'boolean' : 'object';
+
+		if (required || required?.isRequired) {
+			// this is required field
+			if (value?.length <= 0) {
+				setInputError({
+					error: true,
+					msg: requiredType === 'boolean' ? 'This field is required' : required.message,
+				});
+				return false;
+			} else {
+				setInputError();
+			}
+
+			const testCaseRegex = new RegExp(regex?.isRequired);
+
+			// for now - Single case regex
+			if (regex?.isRequired && !testCaseRegex.test(value)) {
+				setInputError({
+					error: true,
+					msg: regex?.message || "This field doesn't match the regex!",
+				});
+				return false;
+			} else {
+				setInputError();
+			}
+		}
+
+		return true;
+	}
 
 	const handleChange = (e) => {
 		setLength(e.target?.value?.length);
+
+		const res = validator(e.target?.value);
+
 		if (delay) {
 			clearTimeout(timeout.current);
 
 			timeout.current = setTimeout(() => {
-				onChange(e);
+				onChange(e, !res);
 			}, delay);
 		} else {
-			onChange(e);
+			onChange(e, !res);
 		}
 	};
 
@@ -28,11 +65,34 @@ const TextArea = forwardRef((props, ref) => {
 		onChange({ target: { name: other.name, value: '' } });
 	};
 
+	useEffect(() => {
+		if (!triggerValidation) return;
+
+		const ev = {
+			target: {
+				name,
+				value: internalRef.current.value,
+			},
+		};
+
+		handleChange(ev);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [triggerValidation, ref]);
+
 	return (
 		<div className={`formText`}>
 			{label && <label name={name}>{label}</label>}
-			<textarea {...other} name={name} ref={ref} placeholder={placeholder} onChange={handleChange} autoComplete="off" value={value}></textarea>
-
+			<textarea
+				className={inputError?.error ? 'is-error' : ''}
+				name={name}
+				ref={internalRef || ref}
+				placeholder={placeholder}
+				onChange={handleChange}
+				autoComplete="off"
+				value={value}
+				{...other}
+			></textarea>
+			{inputError?.error && <span error={inputError.msg} />}
 			{allowClear && length > 0 && (
 				<div className="clearButton" onClick={() => clearInput()}>
 					<BsFillBackspaceFill />
@@ -45,8 +105,6 @@ const TextArea = forwardRef((props, ref) => {
 					{helpText}
 				</div>
 			)}
-
-			{errors?.[name] && <div className="error">{errors?.[name]?.message}</div>}
 		</div>
 	);
 });
