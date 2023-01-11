@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../buttons';
 import FormItems from '../index';
 
-function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
+function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit', isLoading = false }) {
 	const [formData, setFormData] = useState({});
 	const [badState, setBadState] = useState(null);
+	const [validationType] = useState(data?.params?.validationType || 'onChange');
 
-	const handleChange = (e, hasError = false) => {
+	function handleChange(e, hasError = false) {
 		let v, t;
 		const {
 			target: { type, name, value },
@@ -32,7 +33,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 				[e.target.name]: hasError ? { error: true, v } : v,
 			};
 		});
-	};
+	}
 
 	function submitForm() {
 		let counter = 0;
@@ -58,10 +59,13 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 		else alert('Error Occured');
 	}
 
-	const renderFormFromJSON = (jsonItem, key, name, triggerValidation) => {
+	function renderFormFromJSON(jsonItem, key, name, triggerValidation) {
 		let C;
 
 		const { help_text, label, placeholder, options, defaultValue, regex, required, choices, type, showPassword } = jsonItem;
+
+		const validateOnBlur = validationType === 'onBlur';
+
 		switch (type) {
 			case 'string':
 				C = (
@@ -75,6 +79,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 						label={label}
 						name={name}
 						triggerValidation={triggerValidation}
+						validateOnBlur={validateOnBlur}
 					/>
 				);
 				break;
@@ -91,6 +96,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 						label={label}
 						name={name}
 						triggerValidation={triggerValidation}
+						validateOnBlur={validateOnBlur}
 					/>
 				);
 				break;
@@ -108,6 +114,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 						label={label}
 						name={name}
 						triggerValidation={triggerValidation}
+						validateOnBlur={validateOnBlur}
 					/>
 				);
 				break;
@@ -124,6 +131,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 						label={label}
 						name={name}
 						triggerValidation={triggerValidation}
+						validateOnBlur={validateOnBlur}
 					/>
 				);
 				break;
@@ -138,6 +146,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 						helpText={help_text}
 						label={label}
 						name={name}
+						validateOnBlur={validateOnBlur}
 					/>
 				);
 				break;
@@ -172,7 +181,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 				{C}
 			</div>
 		);
-	};
+	}
 
 	return (
 		<div>
@@ -181,7 +190,7 @@ function FormWrapper({ onSubmit, data, title, submitTitle = 'Submit' }) {
 				{Object.keys(data).map((key, index) => key !== 'params' && renderFormFromJSON(data[key], index, key, Boolean(badState?.find((item) => item === key))))}
 			</form>
 
-			{onSubmit && <Button title={submitTitle} className="submit" type="submit" onClick={() => submitForm()} />}
+			{onSubmit && <Button isLoading={isLoading} title={submitTitle} className="submit" type="submit" onClick={() => submitForm()} />}
 		</div>
 	);
 }

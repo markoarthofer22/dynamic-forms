@@ -1,8 +1,18 @@
 {
 	"params": {
-		"api": "",
+		"api": "https://www.testsite.com/",
 		"validationType": "onBlur",
-		"type": "POST"
+		"fetchOptions": {
+			"type": "POST",
+			"mode": "cors",
+			"cache": "default",
+			"credentials": "same-origin",
+			"headers": {
+				"Content-Type": "application/json"
+			},
+			"redirect": "follow",
+			"referrerPolicy": "no-referrer-when-downgrade"
+		}
 	},
 	"account_id": {
 		"type": "integer",

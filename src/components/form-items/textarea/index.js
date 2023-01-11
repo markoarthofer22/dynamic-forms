@@ -3,7 +3,22 @@ import { BsFillBackspaceFill, BsInfoCircle } from 'react-icons/bs';
 import './index.scss';
 
 const TextArea = forwardRef((props, ref) => {
-	const { value, triggerValidation, onChange, required, regex, delay, helpText, label, placeholder, allowClear, errors, name, ...other } = props;
+	const {
+		value,
+		triggerValidation,
+		onChange,
+		required,
+		regex,
+		delay,
+		helpText,
+		label,
+		placeholder,
+		allowClear,
+		errors,
+		name,
+		validateOnBlur = false,
+		...other
+	} = props;
 	const [length, setLength] = useState(value?.length ? value?.length : 0);
 	const timeout = useRef();
 	const inputRef = useRef();
@@ -42,7 +57,7 @@ const TextArea = forwardRef((props, ref) => {
 		return true;
 	}
 
-	const handleChange = (e) => {
+	function handleChange(e) {
 		setLength(e.target?.value?.length);
 
 		const res = validator(e.target?.value);
@@ -56,14 +71,14 @@ const TextArea = forwardRef((props, ref) => {
 		} else {
 			onChange(e, !res);
 		}
-	};
+	}
 
-	const clearInput = () => {
+	function clearInput() {
 		setLength(0);
 		clearTimeout(timeout.current);
 		inputRef.current.value = '';
 		onChange({ target: { name: other.name, value: '' } });
-	};
+	}
 
 	useEffect(() => {
 		if (!triggerValidation) return;
@@ -87,9 +102,11 @@ const TextArea = forwardRef((props, ref) => {
 				name={name}
 				ref={internalRef || ref}
 				placeholder={placeholder}
-				onChange={handleChange}
 				autoComplete="off"
-				value={value}
+				value={!validateOnBlur ? value : undefined}
+				defaultValue={validateOnBlur ? value : undefined}
+				onChange={!validateOnBlur ? handleChange : null}
+				onBlur={validateOnBlur ? handleChange : null}
 				{...other}
 			></textarea>
 			{inputError?.error && <span error={inputError.msg} />}

@@ -22,6 +22,8 @@ import FormItems from './components/form-items';
 
 **<FormItems.FormWrapper>** accepts data, which is input structure for the form (check the JSON folder and `form-schema.json`). You can provide `title` prop and `submitTitle` which will change submit button. `onSubmit` callback is mandatory. From it, you will get all of the form data, when it is validated, and than you can manipulate with the data.
 
+**JSON can accept** params node, which will give you access to manipulate with fetchOptions, adding api endpoint and changing validationType (it can be "onBlur" or "onChange", "onChange" is active value if nothing is found). Also all of the fetchOptions are optional. All values are defaulted based on [https://developer.mozilla.org/](https://developer.mozilla.org/)
+
 ### List of available components
 
 -   Input - **<FormItems.Input>**

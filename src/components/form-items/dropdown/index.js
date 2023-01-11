@@ -14,7 +14,7 @@ function Dropdown({ data, helpText, dropdownClass, placeholder, label, name, onC
 	);
 	const [selectedTitle, setSelectedTitle] = useState(null);
 
-	const checkIfSelected = () => {
+	function checkIfSelected() {
 		const item = parsedData.find((i) => {
 			if (i.id === defaultValue) {
 				setSelectedTitle(i.value);
@@ -30,15 +30,15 @@ function Dropdown({ data, helpText, dropdownClass, placeholder, label, name, onC
 					value: item,
 				},
 			});
-	};
+	}
 
-	const toggleDropdown = (e) => {
+	function toggleDropdown(e) {
 		e.preventDefault();
 		e.stopPropagation();
 		setOpen(!isOpen);
-	};
+	}
 
-	const selectItem = (e, item) => {
+	function selectItem(e, item) {
 		e.stopPropagation();
 		setOpen(false);
 		setSelectedTitle(item.value);
@@ -50,7 +50,7 @@ function Dropdown({ data, helpText, dropdownClass, placeholder, label, name, onC
 					value: { ...item },
 				},
 			});
-	};
+	}
 
 	useEffect(() => {
 		if (!defaultValue) return;

@@ -13,6 +13,7 @@ const Input = forwardRef((props, ref) => {
 		className,
 		placeholder,
 		onChange,
+		validateOnBlur = false,
 		iconClick,
 		delay,
 		allowClear,
@@ -127,10 +128,12 @@ const Input = forwardRef((props, ref) => {
 					ref={internalRef || ref}
 					type={enablePassword ? 'text' : type}
 					name={name}
-					className={inputError?.error ? 'is-error' : ''}
-					value={stateValue}
 					placeholder={placeholder}
-					onChange={handleChange}
+					className={inputError?.error ? 'is-error' : ''}
+					value={!validateOnBlur ? stateValue : undefined}
+					defaultValue={validateOnBlur ? stateValue : undefined}
+					onChange={!validateOnBlur ? handleChange : null}
+					onBlur={validateOnBlur ? handleChange : null}
 					autoComplete="off"
 					{...other}
 				/>
